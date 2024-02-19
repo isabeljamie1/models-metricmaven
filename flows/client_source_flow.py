@@ -1,5 +1,8 @@
 from prefect import flow, task
 from prefect_gcp.bigquery import GcpCredentials, BigQueryWarehouse
+import requests
+import time
+
 
 model_sql = {
     "linkedin_ads": "linkedin_ads_model.sql",
@@ -8,8 +11,26 @@ model_sql = {
 }
 
 @task
-def run_airbyte_sync(connectionId):
-    source_type = 'xxx' # replace with your own source type
+def run_airbyte_sync(connectionId, source_type):
+    url = "https://api.airbyte.com/v1/jobs"
+
+    payload = { 
+        "jobType": "sync",
+        "connectionId": connectionId,
+    }
+    headers = {
+        "accept": "application/json",
+        "content-type": "application/json"
+    }
+
+    response = requests.post(url, json=payload, headers=headers)
+
+    while response.status != 'succeeded':
+        url = f"https://api.airbyte.com/v1/jobs/{response.jobId}"
+        headers = {"accept": "application/json"}
+        response = requests.get(url, headers=headers)
+        time.sleep(5)
+
     return source_type
 
 @task
