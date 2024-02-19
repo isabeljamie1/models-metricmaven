@@ -30,6 +30,8 @@ def run_airbyte_sync(connectionId, source_type):
         headers = {"accept": "application/json"}
         response = requests.get(url, headers=headers)
         time.sleep(5)
+        if response.status == 'failed':
+            raise Exception("Airbyte sync failed")
 
     return source_type
 
