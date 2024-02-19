@@ -1,3 +1,5 @@
+CREATE OR REPLACE TABLE metricmaven_prod.all_channels_combined
+AS (
 with facebook_ads as (
     SELECT 
         date,
@@ -58,3 +60,4 @@ UNION ALL
 SELECT * FROM google_ads
 UNION ALL 
 SELECT * FROM linkedin_ads;
+);

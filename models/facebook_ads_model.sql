@@ -1,4 +1,6 @@
-with ads as (
+CREATE OR REPLACE TABLE metricmaven_prod.facebook_ads
+AS (
+    with ads as (
     SELECT
         name as ad_name,
         id as ad_id,
@@ -42,3 +44,4 @@ USING(ad_id)
 LEFT JOIN ads_creative ac
 USING(creative_id)
 WHERE spend>0 or impressions>0 or clicks>0 or conversions>0;
+)

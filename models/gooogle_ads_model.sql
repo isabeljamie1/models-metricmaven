@@ -1,3 +1,5 @@
+CREATE OR REPLACE TABLE metricmaven_prod.google_ads
+AS (
 with ad_groups as (
     SELECT 
         ad_group_id,
@@ -56,3 +58,4 @@ data as (
 )
 
 SELECT DISTINCT * FROM data where spend>0 or impressions>0 or interactions>0 or clicks>0 or all_conversions>0;
+)

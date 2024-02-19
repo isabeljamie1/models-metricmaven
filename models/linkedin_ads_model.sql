@@ -1,3 +1,5 @@
+CREATE OR REPLACE TABLE metricmaven_prod.linkedin_ads
+AS (
 with analytics as (
     SELECT 
         start_date date,
@@ -6,26 +8,26 @@ with analytics as (
         impressions,
         clicks,
         externalWebsiteConversions
-    FROM `$projectID.metricmaven.$sourceName_$clientName_$clientId_ad_creative_analytics`
+    FROM `$projectID.metricmaven.linkedin_ads_$clientName_$clientId_ad_creative_analytics`
 ),
 campaigns as (
     SELECT
         name campaign_name,
         cast(id as string) campaign_id,
         REGEXP_EXTRACT(campaignGroup,'urn\\:li\\:sponsoredCampaignGroup\\:(.*)') campaign_group_id
-    FROM `$projectID.metricmaven.$sourceName_$clientName_$clientId_campaigns`
+    FROM `$projectID.metricmaven.linkedin_ads_$clientName_$clientId_campaigns`
 ),
 campaign_groups as (
     SELECT 
         name as campaign_group_name,
         cast(id as string) campaign_group_id,
-    FROM `$projectID.metricmaven.$sourceName_$clientName_$clientId_campaign_groups`
+    FROM `$projectID.metricmaven.linkedin_ads_$clientName_$clientId_campaign_groups`
 ),
 creatives as (
     SELECT 
         id as creative_id,
         REGEXP_EXTRACT(campaign,'urn\\:li\\:sponsoredCampaign\\:(.*)') campaign_id
-    FROM `$projectID.metricmaven.$sourceName_$clientName_$clientId_creatives`
+    FROM `$projectID.metricmaven.linkedin_ads_$clientName_$clientId_creatives`
 ),
 data as (
     SELECT  
@@ -45,3 +47,4 @@ data as (
 )
 
 SELECT * FROM data
+)
